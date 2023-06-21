@@ -248,7 +248,8 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_client`(client_id_input int unsigned)
 BEGIN
-	select created_at,email,first_name,last_name,id,image_url,username from client where id=client_id_input;
+	select convert(created_at using "utf8" ) as created_at, convert(email using "utf8" ) as email, convert(first_name using "utf8" ) as first_name, convert(last_name using "utf8" ) as last_name, client.id, convert(image_url using "utf8" ) as image_url, convert(username using "utf8" ) as username from client 
+	inner join client_session on client_id=client_id_input where client.id=client_id_input;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -318,4 +319,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-20 20:31:23
+-- Dump completed on 2023-06-20 20:53:40
