@@ -58,9 +58,7 @@ try:
    @app.patch('/api/client')
    #function gets called on api request
    def update_client():
-         error=api_helper.check_endpoint_info(request.json, ['email', 'first_name', 'last_name', 'image_url', 'username', 'password']) 
-         if(error !=None):
-            return make_response(jsonify(error), 400)
+
          #calls the procedure to retrieve information from the DB
          
          results = dbhelper.run_proceedure('CALL update_client(?,?,?,?,?,?)',
@@ -76,6 +74,30 @@ except TypeError:
    
 except: 
    print('something went wrong')
+   
+try:
+   @app.delete('/api/client')
+   #function gets called on api request
+   def delete_client():
+      
+         error=api_helper.check_endpoint_info(request.json, ['password']) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
+         #calls the procedure to retrieve information from the DB
+         
+         results = dbhelper.run_proceedure('CALL delete_client(?)', [request.json.get('password')])
+         #returns results from db run_procedure
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
+   
+except: 
+   print('something went wrong')
+
 
 if(dbcreds.production_mode == True):
    print()
