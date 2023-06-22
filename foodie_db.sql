@@ -34,7 +34,7 @@ CREATE TABLE `client` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `client_UN` (`username`),
   UNIQUE KEY `client_UN_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,6 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
-INSERT INTO `client` VALUES (8,'email_4','cameron','ord','2023-06-20','image','username1','password'),(9,'0e06fca7079e47f8a8d22b6840e2bbee','email1','John','2023-06-20','Marston','image_url','username2'),(10,'email2','John','Marston','2023-06-20','image_url','username3','password');
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,7 +61,7 @@ CREATE TABLE `client_session` (
   UNIQUE KEY `client_session_UN` (`token`),
   KEY `client_session_FK` (`client_id`),
   CONSTRAINT `client_session_FK` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,7 +70,6 @@ CREATE TABLE `client_session` (
 
 LOCK TABLES `client_session` WRITE;
 /*!40000 ALTER TABLE `client_session` DISABLE KEYS */;
-INSERT INTO `client_session` VALUES (5,'token_1',8),(6,'password',9),(7,'5a1fc5f4aa444061940de7e0d3ff2a3a',10);
 /*!40000 ALTER TABLE `client_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -224,10 +222,10 @@ UNLOCK TABLES;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_client`(email_input varchar(100), password_input varchar(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_client`(password_input varchar(100))
     MODIFIES SQL DATA
 BEGIN
-	delete client from client where email=email_input and password=password_input;
+	delete from client where password=password_input;
 	select	row_count();
 	commit;
 END ;;
@@ -291,7 +289,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `update_client`(token_input varchar(200), email_input varchar(100), first_name_input varchar(100), last_name_input varchar(100), image_input varchar(2000), username_input varchar(100), password_input varchar(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_client`(email_input varchar(100), first_name_input varchar(100), last_name_input varchar(100), image_input varchar(2000), username_input varchar(100), password_input varchar(100))
     MODIFIES SQL DATA
 BEGIN
 	UPDATE client 
@@ -302,6 +300,8 @@ BEGIN
 	image_url = IFNULL(image_input,image_url),
 	username = IFNULL(username_input,username),
 	password = IFNULL(password_input,password);
+	select row_count();
+
 	commit;
 END ;;
 DELIMITER ;
@@ -319,4 +319,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-20 20:53:40
+-- Dump completed on 2023-06-22 17:07:13
