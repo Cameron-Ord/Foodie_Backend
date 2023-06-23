@@ -4,6 +4,9 @@ from flask import Flask,request, make_response, jsonify
 import dbhelper, api_helper, dbcreds, uuid
 app = Flask(__name__)
 
+
+#----------------------/api/client----------------------#
+
 try:
    @app.post('/api/client')
    #function gets called on api request
@@ -53,17 +56,22 @@ except:
    print('something went wrong')
    
    
-   
+   #doesnt work yet
 try:
    @app.patch('/api/client')
    #function gets called on api request
    def update_client():
-
+      
+         error=api_helper.check_endpoint_info(request.headers, ['token']) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
          #calls the procedure to retrieve information from the DB
          
-         results = dbhelper.run_proceedure('CALL update_client(?,?,?,?,?,?)',
-                                          [request.json.get('email'), request.json.get('first_name'), request.json.get('last_name'), request.json.get('image_url'), request.json.get('username'), request.json.get('password')])
+         results = dbhelper.run_proceedure('CALL update_client(?,?,?,?,?,?,?)',
+                                          [request.json.get('email'), request.json.get('first_name'), request.json.get('last_name'), request.json.get('image_url'), request.json.get('username'), request.json.get('password'), request.headers.get('token')])
          #returns results from db run_procedure
+         
+      
          if(type(results) == list):
             return make_response(jsonify(results), 200)
          else:
@@ -85,7 +93,11 @@ try:
             return make_response(jsonify(error), 400)
          #calls the procedure to retrieve information from the DB
          
-         results = dbhelper.run_proceedure('CALL delete_client(?)', [request.json.get('password')])
+         error_2=api_helper.check_endpoint_info(request.headers, ['token']) 
+         if(error_2 !=None):
+            return make_response(jsonify(error), 400)
+         
+         results = dbhelper.run_proceedure('CALL delete_client(?,?)', [request.json.get('password'), request.headers.get('token')])
          #returns results from db run_procedure
          if(type(results) == list):
             return make_response(jsonify(results), 200)
@@ -97,6 +109,8 @@ except TypeError:
    
 except: 
    print('something went wrong')
+   
+   
 
 
 if(dbcreds.production_mode == True):
