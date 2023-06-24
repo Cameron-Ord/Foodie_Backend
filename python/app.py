@@ -266,6 +266,83 @@ except TypeError:
 except: 
    print('something went wrong')
       
+try:
+   @app.delete('/api/restaurant')
+   #function gets called on api request
+   def delete_rest():
+      
+         error=api_helper.check_endpoint_info(request.json, ['password']) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
+         #calls the procedure to retrieve information from the DB
+         
+         error_2=api_helper.check_endpoint_info(request.headers, ['token']) 
+         if(error_2 !=None):
+            return make_response(jsonify(error_2), 400)
+         
+         results = dbhelper.run_proceedure('CALL delete_restaurant(?,?)', [request.json.get('password'), request.headers.get('token')])
+         #returns results from db run_procedure
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
+   
+except: 
+   print('something went wrong')
+   
+
+#--------------------/API/RESTAURANT-LOGIN--------------------#
+
+   
+try:
+   @app.delete('/api/restaurant-login')
+   #function gets called on api request
+   def rest_logout():
+
+         error_2=api_helper.check_endpoint_info(request.headers, ['token']) 
+         if(error_2 !=None):
+            return make_response(jsonify(error_2), 400)
+         
+         results = dbhelper.run_proceedure('CALL restaurant_logout(?)', [request.headers.get('token')])
+         #returns results from db run_procedure
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
+   
+except: 
+   print('something went wrong')
+   
+try:
+   @app.post('/api/restaurant-login')
+   #function gets called on api request
+   def rest_login():
+      #calls the function in api_helper to loop through the information sent
+         error=api_helper.check_endpoint_info(request.json, ['email','password']) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
+         #calls the proceedure to insert sent information into the DB
+         token = uuid.uuid4().hex
+         results = dbhelper.run_proceedure('CALL restaurant_login(?,?,?)', 
+            [request.json.get('email'), request.json.get('password'), token])
+         #returns results from db run_proceedure
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
+   
+except: 
+   print('something went wrong')
+   
 
 if(dbcreds.production_mode == True):
    print()
