@@ -163,6 +163,75 @@ except:
    print('something went wrong')
    
    
+#--------------------/API/RESTAURANT--------------------#
+   
+   
+try:
+   @app.get('/api/restaurant')
+   #function gets called on api request
+   def get_restaurant():
+         error=api_helper.check_endpoint_info(request.args, ['restaurant_id']) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
+         #calls the procedure to retrieve information from the DB
+         
+         results = dbhelper.run_proceedure('CALL get_restaurant(?)', [request.args.get('restaurant_id')])
+         #returns results from db run_procedure
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
+
+except: 
+   print('something went wrong')
+   
+   
+
+try:
+   @app.post('/api/restaurant')
+   #function gets called on api request
+   def new_restaurant():
+      #calls the function in api_helper to loop through the information sent
+         error=api_helper.check_endpoint_info(request.json, ['email',
+                                                             'password',
+                                                             'name',
+                                                             'address',
+                                                             'phone_number',
+                                                             'bio',
+                                                             'city',
+                                                             'profile_url',
+                                                             'banner_url']) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
+         #calls the proceedure to insert sent information into the DB
+         token = uuid.uuid4().hex
+         results = dbhelper.run_proceedure('CALL new_restaurant(?,?,?,?,?,?,?,?,?,?)', 
+            [request.json.get('email'),
+             request.json.get('password'),
+             request.json.get('name'), 
+             request.json.get('address'),
+             request.json.get('phone_number'), 
+             request.json.get('bio'),
+             request.json.get('city'),
+             request.json.get('profile_url'),
+             request.json.get('banner_url'), 
+             token])
+         #returns results from db run_proceedure
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
+   
+except: 
+   print('something went wrong')
+   
+   
 
 if(dbcreds.production_mode == True):
    print()

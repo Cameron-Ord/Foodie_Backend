@@ -34,7 +34,7 @@ CREATE TABLE `client` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `client_UN` (`username`),
   UNIQUE KEY `client_UN_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
-INSERT INTO `client` VALUES (29,'email_example','Cameron','Ord','2023-06-22','image_url','Nucken','password'),(32,'nucke111n@out2lo123123ok.com','Cameron','Ord','2023-06-22','image_url','N1uck2en12','password');
+INSERT INTO `client` VALUES (29,'email_example','Cameron','Ord','2023-06-22','image_url','Nucken','password'),(34,'email_example3','Cameron','Ord','2023-06-24','image_url','Nucken3','password'),(35,'email_example4','Cameron','Ord','2023-06-24','image_url','Nucken23','password'),(36,'email_example5','Cameron','Ord','2023-06-24','image_url','Nucken5','password'),(37,'email_example6','Cameron','Ord','2023-06-24','image_url','Nucken6','password'),(38,'email_example7','Cameron','Ord','2023-06-24','image_url','Nucken7','password'),(39,'email_example8','Cameron','Ord','2023-06-24','image_url','Nucken8','password'),(40,'email_example9','Cameron','Ord','2023-06-24','image_url','Nucken9','password'),(41,'email_example10','Cameron','Ord','2023-06-24','image_url','Nucken10','password'),(42,'email_example11','Cameron','Ord','2023-06-24','image_url','Nucken11','password'),(43,'email_example12','Cameron','Ord','2023-06-24','image_url','Nucken12','password'),(44,'email_example13','Cameron','Ord','2023-06-24','image_url','Nucken13','password'),(45,'email_example14','Cameron','Ord','2023-06-24','image_url','Nucken14','password');
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,7 +63,7 @@ CREATE TABLE `client_session` (
   UNIQUE KEY `client_session_UN` (`token`),
   KEY `client_session_FK` (`client_id`),
   CONSTRAINT `client_session_FK` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +72,7 @@ CREATE TABLE `client_session` (
 
 LOCK TABLES `client_session` WRITE;
 /*!40000 ALTER TABLE `client_session` DISABLE KEYS */;
-INSERT INTO `client_session` VALUES (66,'efa0ce9280b54afabda7ff58eacc15f7',29,'2023-06-22');
+INSERT INTO `client_session` VALUES (66,'efa0ce9280b54afabda7ff58eacc15f7',29,'2023-06-22'),(73,'ad2fe4bf98f54ba5ae4b7452f001b1d4',40,'2023-06-24'),(74,'5a5a47ae51c74d45be076b2634cb1046',41,'2023-06-24'),(75,'f730d7713e6d4fe9b8a6249c4b0fdb9c',42,'2023-06-24'),(76,'2fbcff86fb4e442daaea9ca26979cf87',43,'2023-06-24'),(77,'88dceaffd90744cdbab18aa9339ddbb8',44,'2023-06-24'),(78,'b8272b2340e54be7ae6505a35188439d',45,'2023-06-24');
 /*!40000 ALTER TABLE `client_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -194,7 +194,7 @@ CREATE TABLE `restaurant` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `restaurant_UN_email` (`email`),
   UNIQUE KEY `restaurant_UN_phone` (`phone_number`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -203,6 +203,7 @@ CREATE TABLE `restaurant` (
 
 LOCK TABLES `restaurant` WRITE;
 /*!40000 ALTER TABLE `restaurant` DISABLE KEYS */;
+INSERT INTO `restaurant` VALUES (1,'restemail','rest','address','509-109-2374','bio','city','profile','banner','password');
 /*!40000 ALTER TABLE `restaurant` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,11 +218,12 @@ CREATE TABLE `restaurant_session` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `token` varchar(200) DEFAULT NULL,
   `restaurant_id` int(10) unsigned DEFAULT NULL,
+  `created_at` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `restaurant_session_UN` (`token`),
   KEY `restaurant_session_FK` (`restaurant_id`),
   CONSTRAINT `restaurant_session_FK` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -230,6 +232,7 @@ CREATE TABLE `restaurant_session` (
 
 LOCK TABLES `restaurant_session` WRITE;
 /*!40000 ALTER TABLE `restaurant_session` DISABLE KEYS */;
+INSERT INTO `restaurant_session` VALUES (1,'a8fbebb442b64b1b9ba3a7d9a7baa6df',1,'2023-06-24');
 /*!40000 ALTER TABLE `restaurant_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -317,8 +320,43 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_client`(client_id_input int unsigned)
 BEGIN
-	select convert(created_at using "utf8" ) as created_at, convert(email using "utf8" ) as email, convert(first_name using "utf8" ) as first_name, convert(last_name using "utf8" ) as last_name, client.id, convert(image_url using "utf8" ) as image_url, convert(username using "utf8" ) as username from client 
-	inner join client_session on client_id=client_id_input where client.id=client_id_input;
+	select 
+	convert(client.created_at using "utf8" ) as created_at,
+	convert(email using "utf8" ) as email,
+	convert(first_name using "utf8" ) as first_name,
+	convert(last_name using "utf8" ) as last_name, client.id,
+	convert(image_url using "utf8" ) as image_url,
+	convert(username using "utf8" ) as username from client 
+	where client_id_input = client.id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_restaurant` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_restaurant`(rest_id_input int unsigned)
+BEGIN
+	select 
+	convert(email using "utf8") as email,
+	convert(name using "utf8") as name,
+	convert(address using "utf8") as address,
+	convert(phone_number using "utf8") as phone_number,
+	convert(bio using "utf8") as bio,
+	convert(city using "utf8") as city,
+	convert(profile_url using "utf8") as profile_url,
+	convert(banner_url using "utf8") as banner_url
+	from restaurant
+	where rest_id_input=restaurant.id;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -335,14 +373,73 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `new_client`(email_input VARCHAR(100), first_name_input VARCHAR(100), last_name_input VARCHAR(100), image_input VARCHAR(100), username_input VARCHAR(100), password_input VARCHAR(100), token_input varchar(300))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `new_client`(email_input VARCHAR(100), first_name_input VARCHAR(100), last_name_input VARCHAR(100), image_input VARCHAR(2000), username_input VARCHAR(100), password_input VARCHAR(100), token_input varchar(300))
     MODIFIES SQL DATA
 BEGIN
 	insert into client (email, first_name, last_name, image_url, username, password, created_at)
 	values (email_input, first_name_input, last_name_input, image_input, username_input, password_input, now());
-	insert into client_session (client_id, token) values ((select client.id from client WHERE username=username_input and password = password_input), token_input);
-	select convert(token using "utf8") as token, client_id from client_session inner join client on password = password_input where client_session.token = token_input and password = password_input
-	limit 1;
+	insert into client_session (client_id, token, created_at) values ((select client.id from client WHERE email=email_input and password = password_input), token_input, now());
+	select convert(token using "utf8") as token, client_id from client_session inner join client on client_id=client.id where client_session.token = token_input and password = password_input and email = email_input;
+	commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `new_restaurant` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `new_restaurant`(email_input varchar(100), password_input varchar(100), name_input varchar(100), address_input varchar (100), phone_number_input varchar (100), bio_input varchar(300), city_input varchar(100), profile_url_input varchar(100), banner_url_input varchar(2000), token_input varchar(200))
+    MODIFIES SQL DATA
+BEGIN
+	insert into restaurant
+	(
+	email,
+	password,
+	name,
+	address,
+	phone_number, 
+	bio,
+	city, 
+	profile_url,
+	banner_url
+	)
+	values 
+	(
+	email_input,
+	password_input,
+	name_input,
+	address_input,
+	phone_number_input, 
+	bio_input,
+	city_input, 
+	profile_url_input,
+	banner_url_input
+	);
+	insert into restaurant_session 
+	(
+	restaurant_id,
+	token,
+	created_at) 
+	values 
+	(
+	(select restaurant.id from restaurant WHERE email=email_input and password = password_input),
+	token_input,
+	now());
+	select 
+	convert(token using "utf8") as token, 
+	restaurant_id 
+	from restaurant_session
+	inner join restaurant on restaurant_id=restaurant.id 
+	where restaurant_session.token = token_input and password = password_input and email = email_input;
 	commit;
 END ;;
 DELIMITER ;
@@ -390,4 +487,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-22 21:00:28
+-- Dump completed on 2023-06-24 10:46:37
