@@ -231,7 +231,41 @@ except TypeError:
 except: 
    print('something went wrong')
    
+try:
+   @app.patch('/api/restaurant')
+   #function gets called on api request
+   def update_restaurant():
+      
+         error=api_helper.check_endpoint_info(request.headers, ['token']) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
+         #calls the procedure to retrieve information from the DB
+         
+         results = dbhelper.run_proceedure('CALL update_restaurant(?,?,?,?,?,?,?,?,?,?)',
+                                          [request.json.get('email'),
+                                           request.json.get('name'),
+                                           request.json.get('address'),
+                                           request.json.get('phone_number'),
+                                           request.json.get('bio'),
+                                           request.json.get('city'),
+                                           request.json.get('profile_url'),
+                                           request.json.get('banner_url'),
+                                           request.json.get('password')
+,                                          request.headers.get('token')])
+         #returns results from db run_procedure
+         
+      
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
    
+except: 
+   print('something went wrong')
+      
 
 if(dbcreds.production_mode == True):
    print()
