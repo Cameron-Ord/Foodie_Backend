@@ -54,9 +54,7 @@ except TypeError:
    
 except: 
    print('something went wrong')
-   
-   
-   #doesnt work yet
+
 try:
    @app.patch('/api/client')
    #function gets called on api request
@@ -342,6 +340,65 @@ except TypeError:
    
 except: 
    print('something went wrong')
+   
+   
+   
+#--------------------/API/MENU--------------------#
+
+
+
+try:
+   @app.post('/api/menu')
+
+   def new_menu_item():
+
+         error=api_helper.check_endpoint_info(request.json, 
+                                              ['description', 'image_url', 'name', 'price', ]) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
+
+         error_2=api_helper.check_endpoint_info(request.headers,['token' ]) 
+         if(error_2 !=None):
+            return make_response(jsonify(error_2), 400)
+
+
+         results = dbhelper.run_proceedure('CALL new_menu_item(?,?,?,?,?)', 
+            [request.json.get('description'), request.json.get('image_url'), request.json.get('name'), request.json.get('price'), request.headers.get('token')])
+
+
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
+   
+except: 
+   print('something went wrong')
+   
+try:
+   @app.get('/api/menu')
+
+   def get_menu():
+         error=api_helper.check_endpoint_info(request.args, ['restaurant_id']) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
+
+         
+         results = dbhelper.run_proceedure('CALL get_menu_item(?)', [request.args.get('restaurant_id')])
+
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
+   
+except: 
+   print('something went wrong')
+   
    
 
 if(dbcreds.production_mode == True):
