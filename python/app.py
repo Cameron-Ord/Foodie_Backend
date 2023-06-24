@@ -248,8 +248,8 @@ try:
                                            request.json.get('city'),
                                            request.json.get('profile_url'),
                                            request.json.get('banner_url'),
-                                           request.json.get('password')
-,                                          request.headers.get('token')])
+                                           request.json.get('password'),
+                                           request.headers.get('token')])
          #returns results from db run_procedure
          
       
@@ -399,6 +399,69 @@ except TypeError:
 except: 
    print('something went wrong')
    
+
+   
+try:
+   @app.patch('/api/menu')
+   #function gets called on api request
+   def update_menu_item():
+      
+         error=api_helper.check_endpoint_info(request.headers, ['token']) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
+         #calls the procedure to retrieve information from the DB
+               
+         error=api_helper.check_endpoint_info(request.json, ['menu_id']) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
+         #calls the procedure to retrieve information from the DB
+         results = dbhelper.run_proceedure('CALL update_menu_item(?,?,?,?,?,?)',
+                                          [request.json.get('description'),
+                                           request.json.get('image_url'),
+                                           request.json.get('name'),
+                                           request.json.get('price'),
+                                           request.json.get('menu_id'),
+                                           request.headers.get('token')])
+         #returns results from db run_procedure
+         
+      
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
+   
+except: 
+   print('something went wrong')
+         
+         
+try:
+   @app.delete('/api/menu')
+
+   def delete_menu_item():
+      
+         error=api_helper.check_endpoint_info(request.json, ['menu_id']) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
+
+         error_2=api_helper.check_endpoint_info(request.headers, ['token']) 
+         if(error_2 !=None):
+            return make_response(jsonify(error_2), 400)
+         
+         results = dbhelper.run_proceedure('CALL delete_menu_item(?)', [request.json.get('menu_id')])
+
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
+   
+except: 
+   print('something went wrong')
    
 
 if(dbcreds.production_mode == True):

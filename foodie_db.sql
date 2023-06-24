@@ -77,6 +77,30 @@ INSERT INTO `client_session` VALUES (66,'efa0ce9280b54afabda7ff58eacc15f7',29,'2
 UNLOCK TABLES;
 
 --
+-- Table structure for table `example`
+--
+
+DROP TABLE IF EXISTS `example`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `example` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `menu_items` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `example`
+--
+
+LOCK TABLES `example` WRITE;
+/*!40000 ALTER TABLE `example` DISABLE KEYS */;
+INSERT INTO `example` VALUES (1,'1'),(2,'2'),(3,'3');
+/*!40000 ALTER TABLE `example` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `headers_table`
 --
 
@@ -114,7 +138,7 @@ CREATE TABLE `menu_item` (
   PRIMARY KEY (`id`),
   KEY `menu_item_FK` (`restaurant_id`),
   CONSTRAINT `menu_item_FK` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,34 +147,8 @@ CREATE TABLE `menu_item` (
 
 LOCK TABLES `menu_item` WRITE;
 /*!40000 ALTER TABLE `menu_item` DISABLE KEYS */;
-INSERT INTO `menu_item` VALUES (1,'a pizza','Pepperoni Pizza',25,'picture of pizza',2),(2,'a pizza','Pepperoni Pizza',25,'picture of pizza',2);
+INSERT INTO `menu_item` VALUES (1,'Stinky 22','22',3200,'picture of pizza',2);
 /*!40000 ALTER TABLE `menu_item` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `order`
---
-
-DROP TABLE IF EXISTS `order`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `order` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `client_id` int(10) unsigned DEFAULT NULL,
-  `restaurant_id` int(10) unsigned DEFAULT NULL,
-  `is_complete` tinyint(1) DEFAULT NULL,
-  `is_confirmed` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `order`
---
-
-LOCK TABLES `order` WRITE;
-/*!40000 ALTER TABLE `order` DISABLE KEYS */;
-/*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -164,7 +162,12 @@ CREATE TABLE `order_menu_item` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `order_id` int(10) unsigned DEFAULT NULL,
   `menu_item_id` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `name` varchar(100) DEFAULT NULL,
+  `price` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `order_menu_item_FK` (`order_id`),
+  KEY `order_menu_item_FK_1` (`menu_item_id`),
+  CONSTRAINT `order_menu_item_FK_1` FOREIGN KEY (`menu_item_id`) REFERENCES `menu_item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -175,6 +178,34 @@ CREATE TABLE `order_menu_item` (
 LOCK TABLES `order_menu_item` WRITE;
 /*!40000 ALTER TABLE `order_menu_item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `order_menu_item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `orders`
+--
+
+DROP TABLE IF EXISTS `orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `orders` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `client_id` int(10) unsigned DEFAULT NULL,
+  `restaurant_id` int(10) unsigned DEFAULT NULL,
+  `is_complete` tinyint(1) DEFAULT NULL,
+  `is_confirmed` tinyint(1) DEFAULT NULL,
+  `menu_items` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orders`
+--
+
+LOCK TABLES `orders` WRITE;
+/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+INSERT INTO `orders` VALUES (1,NULL,NULL,NULL,NULL,'1'),(2,NULL,NULL,NULL,NULL,'2'),(3,NULL,NULL,NULL,NULL,'3');
+/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -198,7 +229,7 @@ CREATE TABLE `restaurant` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `restaurant_UN_email` (`email`),
   UNIQUE KEY `restaurant_UN_phone` (`phone_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -207,7 +238,7 @@ CREATE TABLE `restaurant` (
 
 LOCK TABLES `restaurant` WRITE;
 /*!40000 ALTER TABLE `restaurant` DISABLE KEYS */;
-INSERT INTO `restaurant` VALUES (2,'restemail','rest','address','509-109-2374','bio','city','profile','banner','password');
+INSERT INTO `restaurant` VALUES (2,'email4','rest','address','509-109-2374','bio','city','profile','banner','password'),(5,'restemail2','rest2','address','509-109-2373','bio','city','profile','banner','password');
 /*!40000 ALTER TABLE `restaurant` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -227,7 +258,7 @@ CREATE TABLE `restaurant_session` (
   UNIQUE KEY `restaurant_session_UN` (`token`),
   KEY `restaurant_session_FK` (`restaurant_id`),
   CONSTRAINT `restaurant_session_FK` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -236,7 +267,7 @@ CREATE TABLE `restaurant_session` (
 
 LOCK TABLES `restaurant_session` WRITE;
 /*!40000 ALTER TABLE `restaurant_session` DISABLE KEYS */;
-INSERT INTO `restaurant_session` VALUES (2,'a3e585c18e2347898c5283b777ea9db2',2,'2023-06-24');
+INSERT INTO `restaurant_session` VALUES (2,'a3e585c18e2347898c5283b777ea9db2',2,'2023-06-24'),(4,'56f574e1ea404d23810f315ebce26ad0',5,'2023-06-24');
 /*!40000 ALTER TABLE `restaurant_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -292,6 +323,39 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `client_post_order` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `client_post_order`(restaurant_id_input int unsigned, is_confirmed_input BOOL, is_complete_input BOOL, menu_item_input varchar (300), token_input varchar(200))
+    MODIFIES SQL DATA
+BEGIN
+
+	declare client_id int unsigned default 10;
+	set client_id = (select client_id from client_session where token = token_input limit 1);
+
+	set menu_item_input = replace(menu_item_input, '[', '(');
+	set menu_item_input = replace(menu_item_input, ']', ')');
+	set menu_item_input = replace(menu_item_input, ',', '),(');
+	
+	prepare stmt from concat('insert into order(menu_items) values', menu_item_input);
+	execute stmt; 
+	
+	select row_count();
+
+	commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `delete_client` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -305,6 +369,28 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_client`(password_input varch
 BEGIN
 	delete client from client inner join client_session on client_id = client.id where password = password_input and token = token_input;
 	select	row_count();
+	commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `delete_menu_item` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_menu_item`(menu_id_input int unsigned)
+    MODIFIES SQL DATA
+BEGIN
+	delete menu_item from menu_item where menu_item.id = menu_id_input;
+	select row_count();
 	commit;
 END ;;
 DELIMITER ;
@@ -336,6 +422,34 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `example` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `example`(menu_item_input varchar(500))
+    MODIFIES SQL DATA
+BEGIN
+	set menu_item_input = replace(menu_item_input, '[', '(');
+	set menu_item_input = replace(menu_item_input, ']', ')');
+	set menu_item_input = replace(menu_item_input, ',', '),(');
+	
+	prepare stmt from concat('insert into orders(menu_items) values', menu_item_input);
+	execute stmt; 
+	
+	select row_count();
+	commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `get_client` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -354,6 +468,27 @@ BEGIN
 	convert(image_url using "utf8" ) as image_url,
 	convert(username using "utf8" ) as username from client 
 	where client_id_input = client.id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_client_order` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_client_order`(token_input varchar(200))
+BEGIN
+	select name, price, menu_item_id, order_id 
+	from `order` 
+	inner join order_menu_item on order_menu_item.order_id = `order`.id where `order`.restaurant_id = (select restaurant_id from restaurant_session where token = token_input);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -598,6 +733,34 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `update_menu_item` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_menu_item`(desc_input varchar(300), image_input varchar(2000), name_input varchar(100), price_input int(10),  menu_id_input int unsigned, token_input varchar(200))
+    MODIFIES SQL DATA
+BEGIN
+	UPDATE menu_item inner join restaurant_session on restaurant_session.restaurant_id = (select restaurant_id from restaurant_session where token = token_input)
+	SET 
+	description = IFNULL(desc_input, description),
+	image_url = IFNULL(image_input, image_url),
+	name = IFNULL(name_input, name),
+	price = IFNULL(price_input, price)
+	where token=token_input and menu_item.id = menu_id_input;
+	select row_count();
+	commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `update_restaurant` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -609,7 +772,7 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `update_restaurant`(email_input varchar(100), name_input varchar(100), address_input varchar(100), phone_number_input varchar(100), bio_input varchar(300), city_input varchar(100), profile_url_input varchar(2000), banner_url_input varchar(2000), password_input varchar(100), token_input varchar(250))
     MODIFIES SQL DATA
 BEGIN
-	UPDATE restaurant inner join restaurant_session on restaurant.id = restaurant_id 
+	UPDATE restaurant inner join restaurant_session on restaurant.id = (select restaurant_id from restaurant_session where token=token_input) 
 	SET 
 	email = IFNULL(email_input, email), 
 	name = IFNULL(name_input, name),
@@ -639,4 +802,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-24 13:41:09
+-- Dump completed on 2023-06-24 17:08:22
