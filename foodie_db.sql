@@ -165,8 +165,9 @@ CREATE TABLE `order_menu_item` (
   `name` varchar(100) DEFAULT NULL,
   `price` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `order_menu_item_FK` (`order_id`),
   KEY `order_menu_item_FK_1` (`menu_item_id`),
+  KEY `order_menu_item_FK` (`order_id`),
+  CONSTRAINT `order_menu_item_FK` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `order_menu_item_FK_1` FOREIGN KEY (`menu_item_id`) REFERENCES `menu_item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -195,7 +196,7 @@ CREATE TABLE `orders` (
   `is_confirmed` tinyint(1) DEFAULT NULL,
   `menu_items` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -204,7 +205,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,NULL,NULL,NULL,NULL,'1'),(2,NULL,NULL,NULL,NULL,'2'),(3,NULL,NULL,NULL,NULL,'3');
+INSERT INTO `orders` VALUES (1,NULL,NULL,NULL,NULL,'1'),(2,NULL,NULL,NULL,NULL,'2'),(3,NULL,NULL,NULL,NULL,'3'),(4,NULL,NULL,NULL,NULL,'1'),(5,NULL,NULL,NULL,NULL,'2'),(6,NULL,NULL,NULL,NULL,'3');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -331,18 +332,14 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `client_post_order`(restaurant_id_input int unsigned, is_confirmed_input BOOL, is_complete_input BOOL, menu_item_input varchar (300), token_input varchar(200))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `client_post_order`(menu_item_input varchar(200))
     MODIFIES SQL DATA
 BEGIN
-
-	declare client_id int unsigned default 10;
-	set client_id = (select client_id from client_session where token = token_input limit 1);
-
 	set menu_item_input = replace(menu_item_input, '[', '(');
 	set menu_item_input = replace(menu_item_input, ']', ')');
 	set menu_item_input = replace(menu_item_input, ',', '),(');
 	
-	prepare stmt from concat('insert into order(menu_items) values', menu_item_input);
+	prepare stmt from concat('insert into orders(menu_items) values', menu_item_input);
 	execute stmt; 
 	
 	select row_count();
@@ -413,34 +410,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_restaurant`(password_input v
 BEGIN
 	delete restaurant from restaurant inner join restaurant_session on restaurant_id = restaurant.id where password = password_input and token = token_input;
 	select	row_count();
-	commit;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `example` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `example`(menu_item_input varchar(500))
-    MODIFIES SQL DATA
-BEGIN
-	set menu_item_input = replace(menu_item_input, '[', '(');
-	set menu_item_input = replace(menu_item_input, ']', ')');
-	set menu_item_input = replace(menu_item_input, ',', '),(');
-	
-	prepare stmt from concat('insert into orders(menu_items) values', menu_item_input);
-	execute stmt; 
-	
-	select row_count();
 	commit;
 END ;;
 DELIMITER ;
@@ -802,4 +771,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-24 17:08:22
+-- Dump completed on 2023-06-24 17:17:46
