@@ -196,7 +196,7 @@ CREATE TABLE `orders` (
   `is_confirmed` tinyint(1) DEFAULT NULL,
   `menu_items` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,7 +205,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,NULL,NULL,NULL,NULL,'1'),(2,NULL,NULL,NULL,NULL,'2'),(3,NULL,NULL,NULL,NULL,'3'),(4,NULL,NULL,NULL,NULL,'1'),(5,NULL,NULL,NULL,NULL,'2'),(6,NULL,NULL,NULL,NULL,'3');
+INSERT INTO `orders` VALUES (36,45,2,0,0,'1'),(37,45,2,0,0,'2'),(38,45,2,0,0,'3');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -332,18 +332,24 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `client_post_order`(menu_item_input varchar(200))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `client_post_order`(restaurant_id_input int unsigned,menu_item_input varchar(200), token_input varchar(200))
     MODIFIES SQL DATA
 BEGIN
-	set menu_item_input = replace(menu_item_input, '[', '(');
-	set menu_item_input = replace(menu_item_input, ']', ')');
-	set menu_item_input = replace(menu_item_input, ',', '),(');
+	declare menu_item varchar(200) default '';
+	declare client_id_input int unsigned default 0;
+	declare rows_inserted int default 0;
+	set menu_item_input = replace(menu_item_input, '[', '');
+	set menu_item_input = replace(menu_item_input, ']', '');
+	set client_id_input = (select client_id from client_session where token = token_input);
 	
-	prepare stmt from concat('insert into orders(menu_items) values', menu_item_input);
-	execute stmt; 
-	
-	select row_count();
-
+	while length(menu_item_input) > 0 do
+		set menu_item = trim(SUBSTRING_INDEX(menu_item_input, ',', 1));
+		set menu_item_input = TRIM(SUBSTRING(menu_item_input, length(menu_item) + 2));
+		
+		insert into orders(client_id, restaurant_id, is_confirmed, is_complete, menu_items) VALUES(client_id_input,restaurant_id_input, false, false, menu_item);
+		set rows_inserted = rows_inserted + 1;
+	end while;
+	select rows_inserted;
 	commit;
 END ;;
 DELIMITER ;
@@ -771,4 +777,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-24 17:17:46
+-- Dump completed on 2023-06-26  1:20:32
