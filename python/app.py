@@ -291,7 +291,27 @@ except TypeError:
 except: 
    print('something went wrong')
    
+   
+#--------------------/API/RESTAURANTS--------------------#
 
+try:
+   @app.get('/api/restaurants')
+   #function gets called on api request
+   def get_all_restaurants():
+         
+         results = dbhelper.run_proceedure('CALL get_all_restaurants', [])
+         #returns results from db run_procedure
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
+
+except: 
+   print('something went wrong')
+   
 #--------------------/API/RESTAURANT-LOGIN--------------------#
 
    
@@ -463,7 +483,130 @@ except TypeError:
 except: 
    print('something went wrong')
    
+   
+#--------------------/API/CLIENT-ORDER--------------------#   
 
+
+
+
+try:
+   @app.post('/api/client-order')
+
+   def client_post_order():
+
+         error=api_helper.check_endpoint_info(request.json, 
+                                              ['menu_items', 'restaurant_id' ]) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
+
+         error_2=api_helper.check_endpoint_info(request.headers,['token' ]) 
+         if(error_2 !=None):
+            return make_response(jsonify(error_2), 400)
+
+
+         results = dbhelper.run_proceedure('CALL client_post_order(?,?,?)', 
+            [ request.json.get('restaurant_id'), request.json.get('menu_items') ,request.headers.get('token')])
+
+
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
+   
+except: 
+   print('something went wrong')
+   
+
+try:
+   @app.get('/api/client-order')
+
+   def get_client_order():
+         error=api_helper.check_endpoint_info(request.args, ['is_confirmed', 'is_complete']) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
+         error_2=api_helper.check_endpoint_info(request.headers, ['token']) 
+         if(error_2 !=None):
+            return make_response(jsonify(error_2), 400)
+
+         
+         results = dbhelper.run_proceedure('CALL get_client_order(?,?,?)', [request.headers.get('token'), request.args.get('is_confirmed'), request.args.get('is_complete') ])
+
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
+   
+except: 
+   print('something went wrong')
+   
+   
+#--------------------/API/RESTAURANT-ORDER--------------------#   
+
+try:
+   @app.patch('/api/restaurant-order')
+
+   def restaurant_patch_order():
+
+         error=api_helper.check_endpoint_info(request.json, 
+                                              ['order_id']) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
+
+         error_2=api_helper.check_endpoint_info(request.headers,['token']) 
+         if(error_2 !=None):
+            return make_response(jsonify(error_2), 400)
+
+
+         results = dbhelper.run_proceedure('CALL restaurant_patch_order(?)', 
+            [ request.json.get('order_id')])
+
+
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
+   
+except: 
+   print('something went wrong')
+   
+
+try:
+   @app.get('/api/restaurant-order')
+
+   def rest_get_client_order():
+         error=api_helper.check_endpoint_info(request.args, ['is_confirmed', 'is_complete']) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
+         error_2=api_helper.check_endpoint_info(request.headers, ['token']) 
+         if(error_2 !=None):
+            return make_response(jsonify(error_2), 400)
+
+         
+         results = dbhelper.run_proceedure('CALL rest_get_client_order(?,?,?)', [request.headers.get('token'), request.args.get('is_confirmed'), request.args.get('is_complete') ])
+
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
+   
+except: 
+   print('something went wrong')
+   
+   
+
+   
 if(dbcreds.production_mode == True):
    print()
    print('----Running in Production Mode----')
