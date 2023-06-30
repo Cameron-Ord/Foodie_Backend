@@ -43,7 +43,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
-INSERT INTO `client` VALUES (49,'email_example14','Cameron','Ord','2023-06-27','image_url','Nucken14','password'),(50,'email@outlook.com','Cameron','Ord','2023-06-29','avatar','Nuckeeeeen','password');
+INSERT INTO `client` VALUES (49,'email_example14','Cameron','Ord','2023-06-27','https://arthas_bot.cameron-ord.online/assets/portrait.jpg','Nucken14','password'),(50,'email@outlook.com','Cameron','Ord','2023-06-29','avatar','Nuckeeeeen','password');
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,7 +63,7 @@ CREATE TABLE `client_session` (
   UNIQUE KEY `client_session_UN` (`token`),
   KEY `client_session_FK` (`client_id`),
   CONSTRAINT `client_session_FK` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +72,7 @@ CREATE TABLE `client_session` (
 
 LOCK TABLES `client_session` WRITE;
 /*!40000 ALTER TABLE `client_session` DISABLE KEYS */;
-INSERT INTO `client_session` VALUES (105,'7f39c3649ff84b51b66c39bcc3fe1d10',49,'2023-06-27'),(106,'135c6861f9b14fddae021b73bc56b7fc',49,'2023-06-28'),(107,'4c49d6ac72f645748e4fa14ba84180c6',50,'2023-06-29'),(108,'12b828ff606c4c08a1af38ade4cc5d1f',49,'2023-06-29'),(109,'f1634dfe646b4c41b8d77388adc07983',49,'2023-06-30');
+INSERT INTO `client_session` VALUES (105,'7f39c3649ff84b51b66c39bcc3fe1d10',49,'2023-06-27'),(106,'135c6861f9b14fddae021b73bc56b7fc',49,'2023-06-28'),(107,'4c49d6ac72f645748e4fa14ba84180c6',50,'2023-06-29'),(108,'12b828ff606c4c08a1af38ade4cc5d1f',49,'2023-06-29'),(109,'f1634dfe646b4c41b8d77388adc07983',49,'2023-06-30'),(110,'44446eafaaec4a0b9b29cd610bb13d4f',NULL,'2023-06-30'),(111,'a9ab5c74c8574416969b31377bd5904e',49,'2023-06-30'),(112,'6f25a518a6594065824a55887ac8bb9b',49,'2023-06-30'),(113,'de60ca88f3ea4a0580c7878c3c053696',49,'2023-06-30'),(114,'eae22b1135b34dd596f7db3c850d6aa6',49,'2023-06-30');
 /*!40000 ALTER TABLE `client_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,7 +122,7 @@ CREATE TABLE `order_menu_item` (
   KEY `order_menu_item_FK_1` (`menu_item_id`),
   CONSTRAINT `order_menu_item_FK` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `order_menu_item_FK_1` FOREIGN KEY (`menu_item_id`) REFERENCES `menu_item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +131,7 @@ CREATE TABLE `order_menu_item` (
 
 LOCK TABLES `order_menu_item` WRITE;
 /*!40000 ALTER TABLE `order_menu_item` DISABLE KEYS */;
-INSERT INTO `order_menu_item` VALUES (118,74,16),(119,74,16),(120,74,16),(121,74,16),(122,74,16),(123,74,16),(124,74,16);
+INSERT INTO `order_menu_item` VALUES (118,74,16),(119,74,16),(120,74,16),(121,74,16),(122,74,16),(123,74,16),(124,74,16),(125,75,16),(126,75,16),(127,75,16);
 /*!40000 ALTER TABLE `order_menu_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,7 +153,7 @@ CREATE TABLE `orders` (
   KEY `orders_FK_1` (`restaurant_id`),
   CONSTRAINT `orders_FK` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `orders_FK_1` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,7 +162,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (74,49,21,0,0);
+INSERT INTO `orders` VALUES (74,49,21,1,1),(75,49,21,0,0);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -216,7 +216,7 @@ CREATE TABLE `restaurant_session` (
   UNIQUE KEY `restaurant_session_UN` (`token`),
   KEY `restaurant_session_FK` (`restaurant_id`),
   CONSTRAINT `restaurant_session_FK` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -225,7 +225,7 @@ CREATE TABLE `restaurant_session` (
 
 LOCK TABLES `restaurant_session` WRITE;
 /*!40000 ALTER TABLE `restaurant_session` DISABLE KEYS */;
-INSERT INTO `restaurant_session` VALUES (16,'c003130756074482bd604c67d28d9e80',16,'2023-06-29'),(17,'c288ba8b5e9343008ce362202447716a',18,'2023-06-29'),(18,'9495fce558d44e2886c45f9e371fb805',19,'2023-06-29'),(19,'20ad5254c7384c71b638f34a43f9fa3f',20,'2023-06-29'),(20,'2be234aeb9e94ac994da5c98752d7f31',21,'2023-06-29'),(21,'c20afedb98054f4bb8c49c4a9ec73079',21,'2023-06-29');
+INSERT INTO `restaurant_session` VALUES (16,'c003130756074482bd604c67d28d9e80',16,'2023-06-29'),(17,'c288ba8b5e9343008ce362202447716a',18,'2023-06-29'),(18,'9495fce558d44e2886c45f9e371fb805',19,'2023-06-29'),(19,'20ad5254c7384c71b638f34a43f9fa3f',20,'2023-06-29'),(20,'2be234aeb9e94ac994da5c98752d7f31',21,'2023-06-29'),(21,'c20afedb98054f4bb8c49c4a9ec73079',21,'2023-06-29'),(22,'7bfeba8dc01c4934a0b8df1befaa44b7',21,'2023-06-30'),(23,'97cd87c245b64779aa711334c67cf670',21,'2023-06-30'),(24,'b5eeb80ed1c8473ebe7a837d5c509462',21,'2023-06-30'),(25,'f254cc46f1704124b8e5236bfee3ec46',21,'2023-06-30'),(26,'3c652d177b3642de99190eb5ccd80454',21,'2023-06-30');
 /*!40000 ALTER TABLE `restaurant_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -869,4 +869,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-30  2:03:33
+-- Dump completed on 2023-06-30 10:25:39
