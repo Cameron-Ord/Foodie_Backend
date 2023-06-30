@@ -34,7 +34,7 @@ CREATE TABLE `client` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `client_UN` (`username`),
   UNIQUE KEY `client_UN_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
-INSERT INTO `client` VALUES (49,'email_example14','Cameron','Ord','2023-06-27','image_url','Nucken14','password');
+INSERT INTO `client` VALUES (49,'email_example14','Cameron','Ord','2023-06-27','image_url','Nucken14','password'),(50,'email@outlook.com','Cameron','Ord','2023-06-29','avatar','Nuckeeeeen','password');
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,7 +63,7 @@ CREATE TABLE `client_session` (
   UNIQUE KEY `client_session_UN` (`token`),
   KEY `client_session_FK` (`client_id`),
   CONSTRAINT `client_session_FK` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +72,7 @@ CREATE TABLE `client_session` (
 
 LOCK TABLES `client_session` WRITE;
 /*!40000 ALTER TABLE `client_session` DISABLE KEYS */;
-INSERT INTO `client_session` VALUES (105,'7f39c3649ff84b51b66c39bcc3fe1d10',49,'2023-06-27');
+INSERT INTO `client_session` VALUES (105,'7f39c3649ff84b51b66c39bcc3fe1d10',49,'2023-06-27'),(106,'135c6861f9b14fddae021b73bc56b7fc',49,'2023-06-28'),(107,'4c49d6ac72f645748e4fa14ba84180c6',50,'2023-06-29'),(108,'12b828ff606c4c08a1af38ade4cc5d1f',49,'2023-06-29'),(109,'f1634dfe646b4c41b8d77388adc07983',49,'2023-06-30');
 /*!40000 ALTER TABLE `client_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,7 +93,7 @@ CREATE TABLE `menu_item` (
   PRIMARY KEY (`id`),
   KEY `menu_item_FK` (`restaurant_id`),
   CONSTRAINT `menu_item_FK` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,7 +102,7 @@ CREATE TABLE `menu_item` (
 
 LOCK TABLES `menu_item` WRITE;
 /*!40000 ALTER TABLE `menu_item` DISABLE KEYS */;
-INSERT INTO `menu_item` VALUES (11,'a pizza','Pepperoni Pizza',25,'picture of pizza',11);
+INSERT INTO `menu_item` VALUES (16,'a pizza','Pepperoni Pizza',25,'https://cdn.apartmenttherapy.info/image/upload/f_auto,q_auto:eco,c_fill,g_center,w_730,h_913/k%2FPhoto%2FRecipe%20Ramp%20Up%2F2021-07-Chicken-Alfredo-Pizza%2FChicken-Alfredo-Pizza-KitchnKitchn2970-1_01',21),(17,'a pizza','Pepperoni Pizza',25,'picture of pizza',21),(18,'a pizza','Pepperoni Pizza',25,'picture of pizza',21),(19,'a pizza','Pepperoni Pizza',25,'picture of pizza',21),(20,'a pizza','Pepperoni Pizza',25,'picture of pizza',21),(21,'a pizza','Pepperoni Pizza',25,'picture of pizza',21),(22,'a pizza','Pepperoni Pizza',25,'picture of pizza',21),(23,'a pizza','Pepperoni Pizza',25,'picture of pizza',21),(24,'a pizza','Pepperoni Pizza',25,'picture of pizza',21),(25,'a pizza','Pepperoni Pizza',25,'picture of pizza',21);
 /*!40000 ALTER TABLE `menu_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,7 +122,7 @@ CREATE TABLE `order_menu_item` (
   KEY `order_menu_item_FK_1` (`menu_item_id`),
   CONSTRAINT `order_menu_item_FK` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `order_menu_item_FK_1` FOREIGN KEY (`menu_item_id`) REFERENCES `menu_item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +131,7 @@ CREATE TABLE `order_menu_item` (
 
 LOCK TABLES `order_menu_item` WRITE;
 /*!40000 ALTER TABLE `order_menu_item` DISABLE KEYS */;
-INSERT INTO `order_menu_item` VALUES (59,47,11),(60,47,11),(61,47,11),(62,48,11),(63,48,11),(64,48,11),(65,49,11),(66,49,11),(67,49,11),(68,50,11),(69,50,11),(70,50,11),(71,51,11),(72,51,11),(73,51,11),(74,52,11),(75,52,11),(76,52,11),(77,52,11),(78,52,11),(79,53,11),(80,53,11),(81,53,11),(82,53,11),(83,53,11),(84,54,11),(85,54,11),(86,54,11),(87,54,11),(88,54,11);
+INSERT INTO `order_menu_item` VALUES (118,74,16),(119,74,16),(120,74,16),(121,74,16),(122,74,16),(123,74,16),(124,74,16);
 /*!40000 ALTER TABLE `order_menu_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,7 +153,7 @@ CREATE TABLE `orders` (
   KEY `orders_FK_1` (`restaurant_id`),
   CONSTRAINT `orders_FK` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `orders_FK_1` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,7 +162,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (47,49,11,0,0),(48,49,11,0,1),(49,49,11,0,1),(50,49,11,1,1),(51,49,11,1,1),(52,49,11,0,0),(53,49,11,1,1),(54,49,11,0,1);
+INSERT INTO `orders` VALUES (74,49,21,0,0);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -187,7 +187,7 @@ CREATE TABLE `restaurant` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `restaurant_UN_email` (`email`),
   UNIQUE KEY `restaurant_UN_phone` (`phone_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -196,7 +196,7 @@ CREATE TABLE `restaurant` (
 
 LOCK TABLES `restaurant` WRITE;
 /*!40000 ALTER TABLE `restaurant` DISABLE KEYS */;
-INSERT INTO `restaurant` VALUES (11,'restemail2','rest2','address','509-109-2373','bio','city','profile','banner','password');
+INSERT INTO `restaurant` VALUES (16,'restemail','Pizza Godz','address','509-109-2372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(18,'restemail2','Lords of Pizza','address','509-109-6372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(19,'restemail3','Denizens of Godly Pizza God','address','509-109-3372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(20,'restemail4','Lordly pizza of the heavenly delights','address','509-109-7372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(21,'restemail5','Pizza of the Italian Incarnate','address','509-109-7572','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password');
 /*!40000 ALTER TABLE `restaurant` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -216,7 +216,7 @@ CREATE TABLE `restaurant_session` (
   UNIQUE KEY `restaurant_session_UN` (`token`),
   KEY `restaurant_session_FK` (`restaurant_id`),
   CONSTRAINT `restaurant_session_FK` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -225,7 +225,7 @@ CREATE TABLE `restaurant_session` (
 
 LOCK TABLES `restaurant_session` WRITE;
 /*!40000 ALTER TABLE `restaurant_session` DISABLE KEYS */;
-INSERT INTO `restaurant_session` VALUES (12,'058546e982b64efbb9ee1ce3f7bcb14f',11,'2023-06-27');
+INSERT INTO `restaurant_session` VALUES (16,'c003130756074482bd604c67d28d9e80',16,'2023-06-29'),(17,'c288ba8b5e9343008ce362202447716a',18,'2023-06-29'),(18,'9495fce558d44e2886c45f9e371fb805',19,'2023-06-29'),(19,'20ad5254c7384c71b638f34a43f9fa3f',20,'2023-06-29'),(20,'2be234aeb9e94ac994da5c98752d7f31',21,'2023-06-29'),(21,'c20afedb98054f4bb8c49c4a9ec73079',21,'2023-06-29');
 /*!40000 ALTER TABLE `restaurant_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -290,6 +290,7 @@ DELIMITER ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `client_post_order`(restaurant_id_input int unsigned, menu_item_input varchar(100), token_input varchar(200))
+    MODIFIES SQL DATA
 BEGIN
 	declare menu_item varchar(200) default '';
 	declare client_id_input int unsigned default 0;
@@ -488,12 +489,12 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_client_order`(token_input varchar(200), is_confirmed_input BOOL, is_complete_input BOOL)
 BEGIN
 	
-	if is_confirmed_input = 0 and is_complete_input = 0 then
-	select name, price,menu_item_id, order_id from order_menu_item inner join orders on order_id=orders.id inner join menu_item on menu_item.id = menu_item_id where is_confirmed = 0 and is_complete = 0 and client_id = (select client_id from client_session where token=token_input);
-	elseif is_confirmed_input = 1 and is_complete_input = 0 then
-    select name, price,menu_item_id, order_id from order_menu_item inner join orders on order_id=orders.id inner join menu_item on menu_item.id = menu_item_id where is_confirmed = 1 and is_complete = 0 and client_id = (select client_id from client_session where token=token_input);
-	elseif is_confirmed_input = 1 and is_complete_input = 1 then
-    select name, price,menu_item_id, order_id from order_menu_item inner join orders on order_id=orders.id inner join menu_item on menu_item.id = menu_item_id where is_confirmed = 1 and is_complete = 1 and client_id = (select client_id from client_session where token=token_input);
+	if is_confirmed_input IS NOT NULL and is_complete_input IS NOT NULL then
+	select  is_confirmed, is_complete, convert(name using "utf8") as name, price,menu_item_id, order_id from order_menu_item inner join orders on order_id=orders.id inner join menu_item on menu_item.id = menu_item_id where is_confirmed = is_confirmed_input and is_complete = is_complete_input and client_id = (select client_id from client_session where token=token_input);
+	elseif is_confirmed_input is NOT NULL and is_complete_input is NULL then
+    select convert(name using "utf8") as name, price,menu_item_id, order_id from order_menu_item inner join orders on order_id=orders.id inner join menu_item on menu_item.id = menu_item_id where is_confirmed = is_confirmed_input and client_id = (select client_id from client_session where token=token_input);
+	elseif is_confirmed_input is NULL and is_complete_input is NOT NULL then
+    select convert(name using "utf8") as name, price,menu_item_id, order_id from order_menu_item inner join orders on order_id=orders.id inner join menu_item on menu_item.id = menu_item_id where is_complete = is_complete_input and client_id = (select client_id from client_session where token=token_input);
 	end if;   
 	   
 END ;;
@@ -519,7 +520,9 @@ BEGIN
 	convert(description using "utf8") as description,
 	convert(image_url using "utf8") as image_url,
 	convert(name using "utf8") as name,
-	price from menu_item where restaurant_id = restaurant_id_input;
+	id,
+	price
+    from menu_item where restaurant_id = restaurant_id_input;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -750,8 +753,15 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `rest_get_client_order`()
+CREATE DEFINER=`root`@`localhost` PROCEDURE `rest_get_client_order`(token_input varchar(200), is_confirmed_input BOOL, is_complete_input BOOL)
 BEGIN
+	if is_confirmed_input is NOT NULL and is_complete_input is NOT NULL then
+	select is_confirmed, is_complete, convert(name using "utf8") as name, price,menu_item_id, order_id from order_menu_item inner join orders on order_id=orders.id inner join menu_item on menu_item.id = menu_item_id where is_confirmed = is_confirmed_input and is_complete = is_complete_input and orders.restaurant_id = (select restaurant_id from restaurant_session where token=token_input);
+	elseif is_confirmed_input is NOT NULL and is_complete_input is NULL then
+    select is_confirmed, is_complete, convert(name using "utf8") as name, price,menu_item_id, order_id from order_menu_item inner join orders on order_id=orders.id inner join menu_item on menu_item.id = menu_item_id where is_confirmed = is_confirmed_input and orders.restaurant_id = (select restaurant_id from restaurant_session where token=token_input);
+	elseif is_confirmed_input is NULL and is_complete_input is NOT NULL then
+    select is_confirmed, is_complete, convert(name using "utf8") as name, price,menu_item_id, order_id from order_menu_item inner join orders on order_id=orders.id inner join menu_item on menu_item.id = menu_item_id where is_complete = is_complete_input and orders.restaurant_id = (select restaurant_id from restaurant_session where token=token_input);
+	end if;   
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -859,4 +869,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-27 21:09:23
+-- Dump completed on 2023-06-30  2:03:33

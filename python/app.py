@@ -502,10 +502,10 @@ try:
          error_2=api_helper.check_endpoint_info(request.headers,['token' ]) 
          if(error_2 !=None):
             return make_response(jsonify(error_2), 400)
-
+  
 
          results = dbhelper.run_proceedure('CALL client_post_order(?,?,?)', 
-            [ request.json.get('restaurant_id'), request.json.get('menu_items') ,request.headers.get('token')])
+            [ request.json.get('restaurant_id'), str(request.json.get('menu_items')) ,request.headers.get('token')])
 
 
          if(type(results) == list):
@@ -524,9 +524,7 @@ try:
    @app.get('/api/client-order')
 
    def get_client_order():
-         error=api_helper.check_endpoint_info(request.args, ['is_confirmed', 'is_complete']) 
-         if(error !=None):
-            return make_response(jsonify(error), 400)
+
          error_2=api_helper.check_endpoint_info(request.headers, ['token']) 
          if(error_2 !=None):
             return make_response(jsonify(error_2), 400)
@@ -562,7 +560,6 @@ try:
          if(error_2 !=None):
             return make_response(jsonify(error_2), 400)
 
-
          results = dbhelper.run_proceedure('CALL restaurant_patch_order(?)', 
             [ request.json.get('order_id')])
 
@@ -583,9 +580,7 @@ try:
    @app.get('/api/restaurant-order')
 
    def rest_get_client_order():
-         error=api_helper.check_endpoint_info(request.args, ['is_confirmed', 'is_complete']) 
-         if(error !=None):
-            return make_response(jsonify(error), 400)
+
          error_2=api_helper.check_endpoint_info(request.headers, ['token']) 
          if(error_2 !=None):
             return make_response(jsonify(error_2), 400)
