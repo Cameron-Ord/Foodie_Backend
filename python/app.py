@@ -600,6 +600,35 @@ except:
    print('something went wrong')
    
    
+   
+   #---blobtest---#
+try:
+   @app.post('/api/image-test')
+
+   def image_post():
+
+         error=api_helper.check_endpoint_info(request.files, 
+                                              ['image']) 
+         if(error !=None):
+            return make_response(jsonify(error), 400)
+         
+         
+         results = dbhelper.run_proceedure('CALL post_image(?)', 
+            [request.files.get('image')])
+
+
+         if(type(results) == list):
+            return make_response(jsonify(results), 200)
+         else:
+            return make_response(jsonify('something has gone wrong'), 500)
+
+except TypeError:
+   print('Invalid entry, try again')
+   
+except: 
+   print('something went wrong')
+   
+   
 
    
 if(dbcreds.production_mode == True):

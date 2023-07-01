@@ -32,4 +32,3 @@ def run_proceedure(sql, args):
             conn.close()
             #returing the results from cursor.fetchall()
         return results
-
