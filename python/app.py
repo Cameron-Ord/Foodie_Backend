@@ -612,10 +612,12 @@ try:
          if(error !=None):
             return make_response(jsonify(error), 400)
          
-         
+         data = request.files['image'].read()
+ 
          results = dbhelper.run_proceedure('CALL post_image(?)', 
-            [request.files.get('image')])
-
+            [data])
+         
+        
 
          if(type(results) == list):
             return make_response(jsonify(results), 200)
