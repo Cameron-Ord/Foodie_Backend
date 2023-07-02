@@ -234,6 +234,8 @@ try:
    #function gets called on api request
    def update_restaurant():
       
+      
+      
          error=api_helper.check_endpoint_info(request.headers, ['token']) 
          if(error !=None):
             return make_response(jsonify(error), 400)
@@ -434,7 +436,7 @@ try:
          error=api_helper.check_endpoint_info(request.json, ['menu_id']) 
          if(error !=None):
             return make_response(jsonify(error), 400)
-         #calls the procedure to retrieve information from the DB
+
          results = dbhelper.run_proceedure('CALL update_menu_item(?,?,?,?,?,?)',
                                           [request.json.get('description'),
                                            request.json.get('image_url'),
