@@ -63,7 +63,7 @@ CREATE TABLE `client_session` (
   UNIQUE KEY `client_session_UN` (`token`),
   KEY `client_session_FK` (`client_id`),
   CONSTRAINT `client_session_FK` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +72,7 @@ CREATE TABLE `client_session` (
 
 LOCK TABLES `client_session` WRITE;
 /*!40000 ALTER TABLE `client_session` DISABLE KEYS */;
-INSERT INTO `client_session` VALUES (105,'7f39c3649ff84b51b66c39bcc3fe1d10',49,'2023-06-27'),(106,'135c6861f9b14fddae021b73bc56b7fc',49,'2023-06-28'),(107,'4c49d6ac72f645748e4fa14ba84180c6',50,'2023-06-29'),(108,'12b828ff606c4c08a1af38ade4cc5d1f',49,'2023-06-29'),(109,'f1634dfe646b4c41b8d77388adc07983',49,'2023-06-30'),(110,'44446eafaaec4a0b9b29cd610bb13d4f',NULL,'2023-06-30'),(111,'a9ab5c74c8574416969b31377bd5904e',49,'2023-06-30'),(112,'6f25a518a6594065824a55887ac8bb9b',49,'2023-06-30'),(113,'de60ca88f3ea4a0580c7878c3c053696',49,'2023-06-30'),(114,'eae22b1135b34dd596f7db3c850d6aa6',49,'2023-06-30');
+INSERT INTO `client_session` VALUES (105,'7f39c3649ff84b51b66c39bcc3fe1d10',49,'2023-06-27'),(106,'135c6861f9b14fddae021b73bc56b7fc',49,'2023-06-28'),(107,'4c49d6ac72f645748e4fa14ba84180c6',50,'2023-06-29'),(108,'12b828ff606c4c08a1af38ade4cc5d1f',49,'2023-06-29'),(109,'f1634dfe646b4c41b8d77388adc07983',49,'2023-06-30'),(110,'44446eafaaec4a0b9b29cd610bb13d4f',NULL,'2023-06-30'),(111,'a9ab5c74c8574416969b31377bd5904e',49,'2023-06-30'),(112,'6f25a518a6594065824a55887ac8bb9b',49,'2023-06-30'),(113,'de60ca88f3ea4a0580c7878c3c053696',49,'2023-06-30'),(114,'eae22b1135b34dd596f7db3c850d6aa6',49,'2023-06-30'),(115,'f690d384cc064daba921de4822beced2',49,'2023-07-02'),(116,'e73b1f009e3c4c16803e48b5a04c1de3',49,'2023-07-02');
 /*!40000 ALTER TABLE `client_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -102,7 +102,7 @@ CREATE TABLE `menu_item` (
 
 LOCK TABLES `menu_item` WRITE;
 /*!40000 ALTER TABLE `menu_item` DISABLE KEYS */;
-INSERT INTO `menu_item` VALUES (16,'desc','Pepperoni Pizza',25,'https://cdn.apartmenttherapy.info/image/upload/f_auto,q_auto:eco,c_fill,g_center,w_730,h_913/k%2FPhoto%2FRecipe%20Ramp%20Up%2F2021-07-Chicken-Alfredo-Pizza%2FChicken-Alfredo-Pizza-KitchnKitchn2970-1_01',21),(33,'desc','Pizza Supreme',25,'https://shorturl.at/ikqtS',20),(34,'desc','Pizza',25,'image',20),(35,'desc','Pizza Supreme',25,'image',20);
+INSERT INTO `menu_item` VALUES (16,'desc','Pepperoni Pizza',25,'https://cdn.apartmenttherapy.info/image/upload/f_auto,q_auto:eco,c_fill,g_center,w_730,h_913/k%2FPhoto%2FRecipe%20Ramp%20Up%2F2021-07-Chicken-Alfredo-Pizza%2FChicken-Alfredo-Pizza-KitchnKitchn2970-1_01',21);
 /*!40000 ALTER TABLE `menu_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -186,7 +186,8 @@ CREATE TABLE `restaurant` (
   `password` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `restaurant_UN_email` (`email`),
-  UNIQUE KEY `restaurant_UN_phone` (`phone_number`)
+  UNIQUE KEY `restaurant_UN` (`phone_number`),
+  CONSTRAINT `restaurant_CHECK` CHECK (`phone_number` regexp '[[:digit:]]{3}-[[:digit:]]{3}-[[:digit:]]{4}')
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -196,7 +197,7 @@ CREATE TABLE `restaurant` (
 
 LOCK TABLES `restaurant` WRITE;
 /*!40000 ALTER TABLE `restaurant` DISABLE KEYS */;
-INSERT INTO `restaurant` VALUES (16,'restemail','Pizza Godz','address','509-109-2372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(18,'restemail2','Lords of Pizza','address','509-109-6372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(19,'restemail3','Denizens of Godly Pizza God','address','509-109-3372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(20,'321','Lordly pizza of the heavenly delights','address','5878842312','bio','city','url','banner','password'),(21,'restemail5','Pizza of the Italian Incarnate','address','509-109-7572','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password');
+INSERT INTO `restaurant` VALUES (16,'restemail','Pizza Godz','address','509-109-2372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(18,'restemail2','Lords of Pizza','address','509-109-6372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(19,'restemail3','Denizens of Godly Pizza God','address','509-109-3372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(21,'restemail5','Pizza of the Italian Incarnate','address','509-109-7572','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password');
 /*!40000 ALTER TABLE `restaurant` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -225,7 +226,7 @@ CREATE TABLE `restaurant_session` (
 
 LOCK TABLES `restaurant_session` WRITE;
 /*!40000 ALTER TABLE `restaurant_session` DISABLE KEYS */;
-INSERT INTO `restaurant_session` VALUES (16,'c003130756074482bd604c67d28d9e80',16,'2023-06-29'),(17,'c288ba8b5e9343008ce362202447716a',18,'2023-06-29'),(18,'9495fce558d44e2886c45f9e371fb805',19,'2023-06-29'),(19,'20ad5254c7384c71b638f34a43f9fa3f',20,'2023-06-29'),(20,'2be234aeb9e94ac994da5c98752d7f31',21,'2023-06-29'),(21,'c20afedb98054f4bb8c49c4a9ec73079',21,'2023-06-29'),(22,'7bfeba8dc01c4934a0b8df1befaa44b7',21,'2023-06-30'),(23,'97cd87c245b64779aa711334c67cf670',21,'2023-06-30'),(24,'b5eeb80ed1c8473ebe7a837d5c509462',21,'2023-06-30'),(25,'f254cc46f1704124b8e5236bfee3ec46',21,'2023-06-30'),(26,'3c652d177b3642de99190eb5ccd80454',21,'2023-06-30'),(27,'493735d0bcf840b6b70b846171b9ef54',20,'2023-07-01');
+INSERT INTO `restaurant_session` VALUES (16,'c003130756074482bd604c67d28d9e80',16,'2023-06-29'),(17,'c288ba8b5e9343008ce362202447716a',18,'2023-06-29'),(18,'9495fce558d44e2886c45f9e371fb805',19,'2023-06-29'),(20,'2be234aeb9e94ac994da5c98752d7f31',21,'2023-06-29'),(21,'c20afedb98054f4bb8c49c4a9ec73079',21,'2023-06-29'),(22,'7bfeba8dc01c4934a0b8df1befaa44b7',21,'2023-06-30'),(23,'97cd87c245b64779aa711334c67cf670',21,'2023-06-30'),(24,'b5eeb80ed1c8473ebe7a837d5c509462',21,'2023-06-30'),(25,'f254cc46f1704124b8e5236bfee3ec46',21,'2023-06-30'),(26,'3c652d177b3642de99190eb5ccd80454',21,'2023-06-30');
 /*!40000 ALTER TABLE `restaurant_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -667,28 +668,6 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `post_image` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `post_image`(image_input LONGBLOB)
-    MODIFIES SQL DATA
-BEGIN
-	insert into image_attempt (image) values (image_input);
-	select row_count();
-	commit;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `restaurant_login` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -961,4 +940,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-01 23:14:28
+-- Dump completed on 2023-07-03 17:22:14

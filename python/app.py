@@ -614,10 +614,14 @@ try:
          if(error !=None):
             return make_response(jsonify(error), 400)
          
-         data = request.files['image'].read()
- 
-         results = dbhelper.run_proceedure('CALL post_image(?)', 
-            [data])
+         data = request.files['image']
+         
+         file_path = "/home/cameron/Documents/Innotech/Foodie_Backend/profile_images/image.png"
+         
+         data.save(file_path)
+   
+         results = dbhelper.run_proceedure('CALL post_image(?,?)', 
+            [file_path, request.json.get('name')])
          
         
 
