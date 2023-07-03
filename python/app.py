@@ -5,21 +5,30 @@ import dbhelper, api_helper, dbcreds, uuid
 app = Flask(__name__)
 
 
+#Below are all the API endpoints for each procedure. Each endpoint either gets, posts, deletes, or patches depending on the situation. 
+#Depending on whether data is optional or not, it gets sent to apihelper and runs a function to check for mandatory data
+#Logins also generate a token on the call of their functions, which is used with the non optional data as inputs for the procedures
+#After data has been checked by api_helper(if necessary), it sends aforementioned data to dbhelper where it connects to the DB based off information in my dbcreds file,
+#it commits the sql and args variables which we have sent, then it converts the results to utf8
+
+#Gets that have arguments use request.args. and request.args.get to use send arguments
+
+
 #----------------------/api/client----------------------#
 
 try:
    @app.post('/api/client')
-   #function gets called on api request
+
    def new_client():
-      #calls the function in api_helper to loop through the information sent
+
          error=api_helper.check_endpoint_info(request.json, ['email', 'first_name', 'last_name', 'image_url', 'username', ]) 
          if(error !=None):
             return make_response(jsonify(error), 400)
-         #calls the proceedure to insert sent information into the DB
+
          token = uuid.uuid4().hex
          results = dbhelper.run_proceedure('CALL new_client(?,?,?,?,?,?,?)', 
             [request.json.get('email'), request.json.get('first_name'), request.json.get('last_name'), request.json.get('image_url'), request.json.get('username'), request.json.get('password'), token])
-         #returns results from db run_proceedure
+
          if(type(results) == list):
             return make_response(jsonify(results), 200)
          else:
@@ -30,20 +39,19 @@ except TypeError:
    
 except: 
    print('something went wrong')
-   
+
    
    
 try:
    @app.get('/api/client')
-   #function gets called on api request
+
    def get_client():
          error=api_helper.check_endpoint_info(request.args, ['client_id']) 
          if(error !=None):
             return make_response(jsonify(error), 400)
-         #calls the procedure to retrieve information from the DB
+
          
          results = dbhelper.run_proceedure('CALL get_client(?)', [request.args.get('client_id')])
-         #returns results from db run_procedure
          if(type(results) == list):
             return make_response(jsonify(results), 200)
          else:
@@ -57,18 +65,16 @@ except:
 
 try:
    @app.patch('/api/client')
-   #function gets called on api request
+
    def update_client():
       
          error=api_helper.check_endpoint_info(request.headers, ['token']) 
          if(error !=None):
             return make_response(jsonify(error), 400)
-         #calls the procedure to retrieve information from the DB
          
          results = dbhelper.run_proceedure('CALL update_client(?,?,?,?,?,?,?)',
                                           [request.json.get('email'), request.json.get('first_name'), request.json.get('last_name'), request.json.get('image_url'), request.json.get('username'), request.json.get('password'), request.headers.get('token')])
-         #returns results from db run_procedure
-         
+
       
          if(type(results) == list):
             return make_response(jsonify(results), 200)
@@ -83,20 +89,20 @@ except:
    
 try:
    @app.delete('/api/client')
-   #function gets called on api request
+
    def delete_client():
       
          error=api_helper.check_endpoint_info(request.json, ['password']) 
          if(error !=None):
             return make_response(jsonify(error), 400)
-         #calls the procedure to retrieve information from the DB
+
          
          error_2=api_helper.check_endpoint_info(request.headers, ['token']) 
          if(error_2 !=None):
             return make_response(jsonify(error_2), 400)
          
          results = dbhelper.run_proceedure('CALL delete_client(?,?)', [request.json.get('password'), request.headers.get('token')])
-         #returns results from db run_procedure
+
          if(type(results) == list):
             return make_response(jsonify(results), 200)
          else:
@@ -114,17 +120,17 @@ except:
    
 try:
    @app.post('/api/client-login')
-   #function gets called on api request
+
    def client_login():
-      #calls the function in api_helper to loop through the information sent
+ 
          error=api_helper.check_endpoint_info(request.json, ['email','password']) 
          if(error !=None):
             return make_response(jsonify(error), 400)
-         #calls the proceedure to insert sent information into the DB
+     
          token = uuid.uuid4().hex
          results = dbhelper.run_proceedure('CALL client_login(?,?,?)', 
             [request.json.get('email'), request.json.get('password'), token])
-         #returns results from db run_proceedure
+  
          if(type(results) == list):
             return make_response(jsonify(results), 200)
          else:
@@ -140,7 +146,7 @@ except:
    
 try:
    @app.delete('/api/client-login')
-   #function gets called on api request
+
    def client_logout():
 
          error_2=api_helper.check_endpoint_info(request.headers, ['token']) 
@@ -148,7 +154,7 @@ try:
             return make_response(jsonify(error_2), 400)
          
          results = dbhelper.run_proceedure('CALL client_logout(?)', [request.headers.get('token')])
-         #returns results from db run_procedure
+
          if(type(results) == list):
             return make_response(jsonify(results), 200)
          else:
@@ -166,15 +172,15 @@ except:
    
 try:
    @app.get('/api/restaurant')
-   #function gets called on api request
+
    def get_restaurant():
          error=api_helper.check_endpoint_info(request.args, ['restaurant_id']) 
          if(error !=None):
             return make_response(jsonify(error), 400)
-         #calls the procedure to retrieve information from the DB
+
          
          results = dbhelper.run_proceedure('CALL get_restaurant(?)', [request.args.get('restaurant_id')])
-         #returns results from db run_procedure
+
          if(type(results) == list):
             return make_response(jsonify(results), 200)
          else:
@@ -190,9 +196,9 @@ except:
 
 try:
    @app.post('/api/restaurant')
-   #function gets called on api request
+
    def new_restaurant():
-      #calls the function in api_helper to loop through the information sent
+
          error=api_helper.check_endpoint_info(request.json, ['email',
                                                              'password',
                                                              'name',
@@ -204,7 +210,7 @@ try:
                                                              'banner_url']) 
          if(error !=None):
             return make_response(jsonify(error), 400)
-         #calls the proceedure to insert sent information into the DB
+
          token = uuid.uuid4().hex
          results = dbhelper.run_proceedure('CALL new_restaurant(?,?,?,?,?,?,?,?,?,?)', 
             [request.json.get('email'),
@@ -217,7 +223,7 @@ try:
              request.json.get('profile_url'),
              request.json.get('banner_url'), 
              token])
-         #returns results from db run_proceedure
+
          if(type(results) == list):
             return make_response(jsonify(results), 200)
          else:
@@ -231,7 +237,7 @@ except:
    
 try:
    @app.patch('/api/restaurant')
-   #function gets called on api request
+
    def update_restaurant():
       
       
@@ -239,7 +245,7 @@ try:
          error=api_helper.check_endpoint_info(request.headers, ['token']) 
          if(error !=None):
             return make_response(jsonify(error), 400)
-         #calls the procedure to retrieve information from the DB
+
          
          results = dbhelper.run_proceedure('CALL update_restaurant(?,?,?,?,?,?,?,?,?,?)',
                                           [request.json.get('email'),
@@ -252,7 +258,7 @@ try:
                                            request.json.get('banner_url'),
                                            request.json.get('password'),
                                            request.headers.get('token')])
-         #returns results from db run_procedure
+
          
       
          if(type(results) == list):
@@ -268,20 +274,20 @@ except:
       
 try:
    @app.delete('/api/restaurant')
-   #function gets called on api request
+
    def delete_rest():
       
          error=api_helper.check_endpoint_info(request.json, ['password']) 
          if(error !=None):
             return make_response(jsonify(error), 400)
-         #calls the procedure to retrieve information from the DB
+
          
          error_2=api_helper.check_endpoint_info(request.headers, ['token']) 
          if(error_2 !=None):
             return make_response(jsonify(error_2), 400)
          
          results = dbhelper.run_proceedure('CALL delete_restaurant(?,?)', [request.json.get('password'), request.headers.get('token')])
-         #returns results from db run_procedure
+  
          if(type(results) == list):
             return make_response(jsonify(results), 200)
          else:
@@ -298,11 +304,11 @@ except:
 
 try:
    @app.get('/api/restaurants')
-   #function gets called on api request
+
    def get_all_restaurants():
          
          results = dbhelper.run_proceedure('CALL get_all_restaurants', [])
-         #returns results from db run_procedure
+
          if(type(results) == list):
             return make_response(jsonify(results), 200)
          else:
@@ -319,7 +325,7 @@ except:
    
 try:
    @app.delete('/api/restaurant-login')
-   #function gets called on api request
+
    def rest_logout():
 
          error_2=api_helper.check_endpoint_info(request.headers, ['token']) 
@@ -327,7 +333,7 @@ try:
             return make_response(jsonify(error_2), 400)
          
          results = dbhelper.run_proceedure('CALL restaurant_logout(?)', [request.headers.get('token')])
-         #returns results from db run_procedure
+
          if(type(results) == list):
             return make_response(jsonify(results), 200)
          else:
@@ -341,17 +347,17 @@ except:
    
 try:
    @app.post('/api/restaurant-login')
-   #function gets called on api request
+
    def rest_login():
-      #calls the function in api_helper to loop through the information sent
+
          error=api_helper.check_endpoint_info(request.json, ['email','password']) 
          if(error !=None):
             return make_response(jsonify(error), 400)
-         #calls the proceedure to insert sent information into the DB
+
          token = uuid.uuid4().hex
          results = dbhelper.run_proceedure('CALL restaurant_login(?,?,?)', 
             [request.json.get('email'), request.json.get('password'), token])
-         #returns results from db run_proceedure
+
          if(type(results) == list):
             return make_response(jsonify(results), 200)
          else:
@@ -425,13 +431,13 @@ except:
    
 try:
    @app.patch('/api/menu')
-   #function gets called on api request
+
    def update_menu_item():
       
          error=api_helper.check_endpoint_info(request.headers, ['token']) 
          if(error !=None):
             return make_response(jsonify(error), 400)
-         #calls the procedure to retrieve information from the DB
+
                
          error=api_helper.check_endpoint_info(request.json, ['menu_id']) 
          if(error !=None):
@@ -444,7 +450,7 @@ try:
                                            request.json.get('price'),
                                            request.json.get('menu_id'),
                                            request.headers.get('token')])
-         #returns results from db run_procedure
+
          
       
          if(type(results) == list):
