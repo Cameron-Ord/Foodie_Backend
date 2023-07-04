@@ -34,7 +34,7 @@ CREATE TABLE `client` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `client_UN` (`username`),
   UNIQUE KEY `client_UN_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
-INSERT INTO `client` VALUES (49,'email_example14','Cameron','Ord','2023-06-27','https://arthas_bot.cameron-ord.online/assets/portrait.jpg','Nucken14','password'),(50,'email@outlook.com','Cameron','Ord','2023-06-29','avatar','Nuckeeeeen','password');
+INSERT INTO `client` VALUES (50,'email@outlook.com','Cameron','Ord','2023-06-29','avatar','Nuckeeeeen','password'),(51,'email2','cameron','ord','2023-07-03','avatar','Nucken2','password1');
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,7 +63,7 @@ CREATE TABLE `client_session` (
   UNIQUE KEY `client_session_UN` (`token`),
   KEY `client_session_FK` (`client_id`),
   CONSTRAINT `client_session_FK` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +72,7 @@ CREATE TABLE `client_session` (
 
 LOCK TABLES `client_session` WRITE;
 /*!40000 ALTER TABLE `client_session` DISABLE KEYS */;
-INSERT INTO `client_session` VALUES (105,'7f39c3649ff84b51b66c39bcc3fe1d10',49,'2023-06-27'),(106,'135c6861f9b14fddae021b73bc56b7fc',49,'2023-06-28'),(107,'4c49d6ac72f645748e4fa14ba84180c6',50,'2023-06-29'),(108,'12b828ff606c4c08a1af38ade4cc5d1f',49,'2023-06-29'),(109,'f1634dfe646b4c41b8d77388adc07983',49,'2023-06-30'),(110,'44446eafaaec4a0b9b29cd610bb13d4f',NULL,'2023-06-30'),(111,'a9ab5c74c8574416969b31377bd5904e',49,'2023-06-30'),(112,'6f25a518a6594065824a55887ac8bb9b',49,'2023-06-30'),(113,'de60ca88f3ea4a0580c7878c3c053696',49,'2023-06-30'),(114,'eae22b1135b34dd596f7db3c850d6aa6',49,'2023-06-30'),(115,'f690d384cc064daba921de4822beced2',49,'2023-07-02'),(116,'e73b1f009e3c4c16803e48b5a04c1de3',49,'2023-07-02');
+INSERT INTO `client_session` VALUES (107,'4c49d6ac72f645748e4fa14ba84180c6',50,'2023-06-29'),(110,'44446eafaaec4a0b9b29cd610bb13d4f',NULL,'2023-06-30'),(118,'afcc8db62c154dd5927251dcb1ed5c5b',51,'2023-07-03'),(121,'270869736e1944b3b07a5a6f2f7e0e8e',51,'2023-07-03');
 /*!40000 ALTER TABLE `client_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,7 +122,7 @@ CREATE TABLE `order_menu_item` (
   KEY `order_menu_item_FK_1` (`menu_item_id`),
   CONSTRAINT `order_menu_item_FK` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `order_menu_item_FK_1` FOREIGN KEY (`menu_item_id`) REFERENCES `menu_item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +131,7 @@ CREATE TABLE `order_menu_item` (
 
 LOCK TABLES `order_menu_item` WRITE;
 /*!40000 ALTER TABLE `order_menu_item` DISABLE KEYS */;
-INSERT INTO `order_menu_item` VALUES (118,74,16),(119,74,16),(120,74,16),(121,74,16),(122,74,16),(123,74,16),(124,74,16),(125,75,16),(126,75,16),(127,75,16);
+INSERT INTO `order_menu_item` VALUES (128,NULL,16),(129,NULL,16),(130,NULL,16),(131,NULL,16),(132,NULL,16),(133,NULL,16),(134,NULL,16),(135,NULL,16);
 /*!40000 ALTER TABLE `order_menu_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,7 +153,7 @@ CREATE TABLE `orders` (
   KEY `orders_FK_1` (`restaurant_id`),
   CONSTRAINT `orders_FK` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `orders_FK_1` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,7 +162,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (74,49,21,1,1),(75,49,21,0,0);
+INSERT INTO `orders` VALUES (76,NULL,21,0,0),(77,NULL,21,0,0);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,7 +197,7 @@ CREATE TABLE `restaurant` (
 
 LOCK TABLES `restaurant` WRITE;
 /*!40000 ALTER TABLE `restaurant` DISABLE KEYS */;
-INSERT INTO `restaurant` VALUES (16,'restemail','Pizza Godz','address','509-109-2372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(18,'restemail2','Lords of Pizza','address','509-109-6372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(19,'restemail3','Denizens of Godly Pizza God','address','509-109-3372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(21,'restemail5','Pizza of the Italian Incarnate','address','509-109-7572','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password');
+INSERT INTO `restaurant` VALUES (16,'restemail','Pizza Godz','address','509-109-2372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(18,'restemail2','Lords of Pizza','address','509-109-6372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(21,'restemail5','Pizza of the Italian Incarnate','address','509-109-7572','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password');
 /*!40000 ALTER TABLE `restaurant` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,7 +217,7 @@ CREATE TABLE `restaurant_session` (
   UNIQUE KEY `restaurant_session_UN` (`token`),
   KEY `restaurant_session_FK` (`restaurant_id`),
   CONSTRAINT `restaurant_session_FK` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -226,7 +226,7 @@ CREATE TABLE `restaurant_session` (
 
 LOCK TABLES `restaurant_session` WRITE;
 /*!40000 ALTER TABLE `restaurant_session` DISABLE KEYS */;
-INSERT INTO `restaurant_session` VALUES (16,'c003130756074482bd604c67d28d9e80',16,'2023-06-29'),(17,'c288ba8b5e9343008ce362202447716a',18,'2023-06-29'),(18,'9495fce558d44e2886c45f9e371fb805',19,'2023-06-29'),(20,'2be234aeb9e94ac994da5c98752d7f31',21,'2023-06-29'),(21,'c20afedb98054f4bb8c49c4a9ec73079',21,'2023-06-29'),(22,'7bfeba8dc01c4934a0b8df1befaa44b7',21,'2023-06-30'),(23,'97cd87c245b64779aa711334c67cf670',21,'2023-06-30'),(24,'b5eeb80ed1c8473ebe7a837d5c509462',21,'2023-06-30'),(25,'f254cc46f1704124b8e5236bfee3ec46',21,'2023-06-30'),(26,'3c652d177b3642de99190eb5ccd80454',21,'2023-06-30');
+INSERT INTO `restaurant_session` VALUES (16,'c003130756074482bd604c67d28d9e80',16,'2023-06-29'),(17,'c288ba8b5e9343008ce362202447716a',18,'2023-06-29'),(20,'2be234aeb9e94ac994da5c98752d7f31',21,'2023-06-29'),(21,'c20afedb98054f4bb8c49c4a9ec73079',21,'2023-06-29'),(22,'7bfeba8dc01c4934a0b8df1befaa44b7',21,'2023-06-30'),(23,'97cd87c245b64779aa711334c67cf670',21,'2023-06-30'),(24,'b5eeb80ed1c8473ebe7a837d5c509462',21,'2023-06-30'),(25,'f254cc46f1704124b8e5236bfee3ec46',21,'2023-06-30'),(26,'3c652d177b3642de99190eb5ccd80454',21,'2023-06-30');
 /*!40000 ALTER TABLE `restaurant_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -352,8 +352,11 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_client`(password_input varchar(100), token_input varchar(200))
     MODIFIES SQL DATA
 BEGIN
+	if password_input is not null then
 	delete client from client inner join client_session on client_id = client.id where password = password_input and token = token_input;
-	select	row_count();
+	select	row_count() as "deleted";
+	end if;
+	select row_count();
 	commit;
 END ;;
 DELIMITER ;
@@ -396,8 +399,12 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_restaurant`(password_input varchar(100), token_input varchar(250))
     MODIFIES SQL DATA
 BEGIN
+	if password_input is not null then
 	delete restaurant from restaurant inner join restaurant_session on restaurant_id = restaurant.id where password = password_input and token = token_input;
-	select	row_count();
+	select	row_count() as "deleted";
+	end if;
+	
+	SELECT row_count();
 	commit;
 END ;;
 DELIMITER ;
@@ -803,7 +810,7 @@ BEGIN
     elseif username_input is not null then
    	select convert(username using "utf8") as username from client inner join client_session on client_session.client_id = client.id where token = token_input;
     elseif password_input is not null then
-    select row_count() as "rows updated";
+    select row_count() as "password_updated";
     end if;
 
 	select row_count() as "rows updated";
@@ -920,7 +927,7 @@ BEGIN
 	where token = token_input;
 
     elseif password_input is not null then
-    select row_count();
+    select row_count() as "password_updated";
     end if;
 	select row_count();
 	commit;
@@ -940,4 +947,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-03 17:22:14
+-- Dump completed on 2023-07-03 21:30:05
