@@ -33,8 +33,12 @@ CREATE TABLE `client` (
   `password` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `client_UN` (`username`),
-  UNIQUE KEY `client_UN_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+  UNIQUE KEY `client_UN_email` (`email`),
+  CONSTRAINT `user_CHECK` CHECK (octet_length(trim(`username`)) > 3),
+  CONSTRAINT `email_CHECK` CHECK (`email` regexp '.*@.*'),
+  CONSTRAINT `pass_CHECK` CHECK (octet_length(trim(`password`)) > 3),
+  CONSTRAINT `image_check` CHECK (`image_url` regexp '(http|https)')
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +47,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
-INSERT INTO `client` VALUES (50,'email@outlook.com','Cameron','Ord','2023-06-29','avatar','Nuckeeeeen','password'),(51,'email2','cameron','ord','2023-07-03','avatar','Nucken2','password1');
+INSERT INTO `client` VALUES (53,'cameron@outlook.com','Cameron','Ord','2023-07-03','https://arthas_bot.cameron-ord.online/assets/portrait.jpg','NuckenMcFuggets','password');
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,7 +67,7 @@ CREATE TABLE `client_session` (
   UNIQUE KEY `client_session_UN` (`token`),
   KEY `client_session_FK` (`client_id`),
   CONSTRAINT `client_session_FK` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +76,7 @@ CREATE TABLE `client_session` (
 
 LOCK TABLES `client_session` WRITE;
 /*!40000 ALTER TABLE `client_session` DISABLE KEYS */;
-INSERT INTO `client_session` VALUES (107,'4c49d6ac72f645748e4fa14ba84180c6',50,'2023-06-29'),(110,'44446eafaaec4a0b9b29cd610bb13d4f',NULL,'2023-06-30'),(118,'afcc8db62c154dd5927251dcb1ed5c5b',51,'2023-07-03'),(121,'270869736e1944b3b07a5a6f2f7e0e8e',51,'2023-07-03');
+INSERT INTO `client_session` VALUES (110,'44446eafaaec4a0b9b29cd610bb13d4f',NULL,'2023-06-30'),(122,'e687d9b30e684031baf67c59a83e0698',53,'2023-07-03');
 /*!40000 ALTER TABLE `client_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -102,7 +106,6 @@ CREATE TABLE `menu_item` (
 
 LOCK TABLES `menu_item` WRITE;
 /*!40000 ALTER TABLE `menu_item` DISABLE KEYS */;
-INSERT INTO `menu_item` VALUES (16,'desc','Pepperoni Pizza',25,'https://cdn.apartmenttherapy.info/image/upload/f_auto,q_auto:eco,c_fill,g_center,w_730,h_913/k%2FPhoto%2FRecipe%20Ramp%20Up%2F2021-07-Chicken-Alfredo-Pizza%2FChicken-Alfredo-Pizza-KitchnKitchn2970-1_01',21);
 /*!40000 ALTER TABLE `menu_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -131,7 +134,6 @@ CREATE TABLE `order_menu_item` (
 
 LOCK TABLES `order_menu_item` WRITE;
 /*!40000 ALTER TABLE `order_menu_item` DISABLE KEYS */;
-INSERT INTO `order_menu_item` VALUES (128,NULL,16),(129,NULL,16),(130,NULL,16),(131,NULL,16),(132,NULL,16),(133,NULL,16),(134,NULL,16),(135,NULL,16);
 /*!40000 ALTER TABLE `order_menu_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -162,7 +164,6 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (76,NULL,21,0,0),(77,NULL,21,0,0);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -187,8 +188,15 @@ CREATE TABLE `restaurant` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `restaurant_UN_email` (`email`),
   UNIQUE KEY `restaurant_UN` (`phone_number`),
-  CONSTRAINT `restaurant_CHECK` CHECK (`phone_number` regexp '[[:digit:]]{3}-[[:digit:]]{3}-[[:digit:]]{4}')
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+  CONSTRAINT `restaurant_CHECK` CHECK (`phone_number` regexp '[[:digit:]]{3}-[[:digit:]]{3}-[[:digit:]]{4}'),
+  CONSTRAINT `name_CHECK` CHECK (octet_length(trim(`name`)) > 3),
+  CONSTRAINT `address_CHECK` CHECK (octet_length(trim(`address`)) > 4),
+  CONSTRAINT `email_CHECK` CHECK (`email` regexp '.*@.*'),
+  CONSTRAINT `pass_CHECK` CHECK (octet_length(`password`) > 3),
+  CONSTRAINT `bio check_CHECK` CHECK (octet_length(`bio`) > 25 and octet_length(`bio`) <= 200),
+  CONSTRAINT `image_CHECK` CHECK (`banner_url` regexp '(http|https)'),
+  CONSTRAINT `url_CHECK` CHECK (`profile_url` regexp '(http|https)')
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -197,7 +205,7 @@ CREATE TABLE `restaurant` (
 
 LOCK TABLES `restaurant` WRITE;
 /*!40000 ALTER TABLE `restaurant` DISABLE KEYS */;
-INSERT INTO `restaurant` VALUES (16,'restemail','Pizza Godz','address','509-109-2372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(18,'restemail2','Lords of Pizza','address','509-109-6372','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password'),(21,'restemail5','Pizza of the Italian Incarnate','address','509-109-7572','bio','city','url','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password');
+INSERT INTO `restaurant` VALUES (22,'restemail5@outlook.com','Pizza of the Italian Incarnate','address','509-109-7572','we are a big pizza lord of pizza and we sell pizza','city','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/800px-Pizza-3007395.jpg','password');
 /*!40000 ALTER TABLE `restaurant` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,7 +225,7 @@ CREATE TABLE `restaurant_session` (
   UNIQUE KEY `restaurant_session_UN` (`token`),
   KEY `restaurant_session_FK` (`restaurant_id`),
   CONSTRAINT `restaurant_session_FK` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -226,7 +234,7 @@ CREATE TABLE `restaurant_session` (
 
 LOCK TABLES `restaurant_session` WRITE;
 /*!40000 ALTER TABLE `restaurant_session` DISABLE KEYS */;
-INSERT INTO `restaurant_session` VALUES (16,'c003130756074482bd604c67d28d9e80',16,'2023-06-29'),(17,'c288ba8b5e9343008ce362202447716a',18,'2023-06-29'),(20,'2be234aeb9e94ac994da5c98752d7f31',21,'2023-06-29'),(21,'c20afedb98054f4bb8c49c4a9ec73079',21,'2023-06-29'),(22,'7bfeba8dc01c4934a0b8df1befaa44b7',21,'2023-06-30'),(23,'97cd87c245b64779aa711334c67cf670',21,'2023-06-30'),(24,'b5eeb80ed1c8473ebe7a837d5c509462',21,'2023-06-30'),(25,'f254cc46f1704124b8e5236bfee3ec46',21,'2023-06-30'),(26,'3c652d177b3642de99190eb5ccd80454',21,'2023-06-30');
+INSERT INTO `restaurant_session` VALUES (29,'5a096cc66a76455fbe1d2a7ba4eb0d62',22,'2023-07-03');
 /*!40000 ALTER TABLE `restaurant_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -947,4 +955,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-03 21:30:05
+-- Dump completed on 2023-07-03 22:10:42
